@@ -1,0 +1,23 @@
+# Template file for 'icinga2'
+pkgname=icinga2
+version=2.3.11
+revision=1
+build_style=cmake
+configure_args="-DCMAKE_INSTALL_PREFIX=/usr/icinga2 -DICINGA2_RUNDIR=/run/icinga2 -DICINGA2_SYSCONFIGFILE=/var/lib/icinga2/install-config -DCMAKE_INSTALL_SYSCONFIGDIR=/var/lib/icinga2/"
+makedepends="boost-devel cmake gcc-c++ bison flex yajl-devel pkg-config"
+hostmakedepends="libmysqlclient-devel postgresql-libs-devel libressl-devel libedit-devel "
+short_desc="An open source host, service, and network monitoring program"
+maintainer="Dino Occhialini <dino@occhialini.net>"
+license="GPL"
+homepage="http://www.icinga.org"
+distfiles="https://github.com/Icinga/$pkgname/archive/v$version.tar.gz"
+checksum=b499c46b9371e0046030226f61b9b056bc16e37138f318c88cd9dd2b4edf3152
+
+system_accounts="icinga"
+system_groups="icinga"
+icinga_homedir="/var/lib/icinga"
+
+
+post_install() {
+    vsv icinga2
+}
