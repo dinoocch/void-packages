@@ -1,0 +1,9 @@
+case "${ACTION}" in
+post)
+    rm -rf /opt/google-chrome
+    rm -f /usr/share/man/man1/google-chrome.1
+    rm -f /usr/share/applications/google-chrome.desktop
+    rm -f /usr/bin/google-chrome
+    rm -f /usr/bin/google-chrome-stable
+    ;;
+esac

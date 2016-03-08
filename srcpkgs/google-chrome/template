@@ -1,0 +1,44 @@
+# Template file for 'google-chrome'
+pkgname=google-chrome
+version=49.0.2623.75
+revision=1
+
+_chromeVersion="49.0.2623.87"
+_chromeRevision="1"
+_channel="stable"
+_baseUrl="http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable"
+_chromeChecksum="dc273de84f6f2dad563bcbbb2e62312cd2a61d6ed41e10398bff7fdc1883d6cc"
+maintainer="Dino Occhialini <dino.occhialini@gmail.com>"
+homepage="http://www.google.com/chrome/"
+license="chrome"
+short_desc="An attempt at creating a safer, faster, and more stable browser"
+
+_filename=google-chrome-${_channel}_${_chromeVersion}-${_chromeRevision}_amd64.deb
+_chromeUrl="${_baseUrl}/${_filename}"
+
+distfiles="${_chromeUrl}"
+checksum="$_chromeChecksum"
+
+only_for_archs="x86_64"
+repository=nonfree
+
+create_wrksrc=yes
+depends="GConf alsa-lib atk binutils glibc cairo cups dbus dpkg expat \
+	fontconfig freetype libgcc gdk-pixbuf glib gtk2-engines nspr \
+	nss pango libstdc++ libX11 libXcomposite libXcursor libXdamage \
+	libXext libXfixes libXi libXrandr libXrender libXtst ca-certificates \
+	curl xdg-utils wget xz"
+
+do_extract() {
+	:
+}
+
+do_install() {
+	sed \
+		-e "s|%VERSION%|${_chromeVersion}|" \
+		-e "s|%CHROME_URL%|${_chromeUrl}|" \
+		-e "s|%CHROME_CHECKSUM%|${_chromeChecksum}|" \
+		${FILESDIR}/google-chrome-vars.sh.in > google-chrome-vars.sh
+	vinstall google-chrome-vars.sh 644 /usr/lib/$pkgname
+	vlicense ${FILESDIR}/LICENSE
+}

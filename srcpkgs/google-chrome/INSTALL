@@ -1,0 +1,33 @@
+#
+# This script will install google-chrome locally
+#
+
+BUILD_DIR="/tmp/${PKGNAME}.build"
+
+case "${ACTION}" in
+post)
+    . usr/lib/google-chrome/google-chrome-vars.sh
+    mkdir -p "$BUILD_DIR"
+    (
+        cd "$BUILD_DIR"
+        xbps-uhelper fetch "${CHROME_URL}>$PKGNAME.deb"
+        echo "$CHROME_CHECKSUM $PKGNAME.deb" > chksum
+        sha256sum -c chksum || exit 1
+
+        ar x "$PKGNAME.deb"
+        tar xf data.tar.xz
+    ) || {
+        echo Error while extracting;
+        rm -r $BUILD_DIR;
+        exit 1;
+    }
+    mv $BUILD_DIR/usr/share/applications/* /usr/share/applications
+    mv $BUILD_DIR/usr/share/man/man1/* /usr/share/man/man1
+    mv $BUILD_DIR/opt/google/chrome /opt/google-chrome/
+    ln -s /opt/google-chrome/google-chrome /usr/bin/google-chrome
+    ln -s /opt/google-chrome/google-chrome /usr/bin/google-chrome-stable
+
+    rm -r $BUILD_DIR
+    ;;
+esac
+
